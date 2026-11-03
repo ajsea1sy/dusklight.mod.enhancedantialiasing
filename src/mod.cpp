@@ -36,6 +36,7 @@ ConfigVarHandle g_cvarDepthThreshold = 0;
 ConfigVarHandle g_cvarMaxSearchSteps = 0;
 ConfigVarHandle g_cvarBlendStrength = 0;
 ConfigVarHandle g_cvarLocalContrast = 0;
+ConfigVarHandle g_cvarDetailProtection = 0;
 ConfigVarHandle g_cvarDebugView = 0;
 
 GfxComputeTypeHandle g_computeType = 0;
@@ -86,7 +87,7 @@ struct SmaaUniforms {
     float max_search_steps;
     float local_contrast_factor;
     float blend_strength;
-    float corner_rounding;
+    float detail_protection;
     uint32_t flags;
     uint32_t debug_view;
     float _pad0;
@@ -483,7 +484,7 @@ void on_scene_after_opaque(ModContext*, const GfxStageContext* stageCtx, void*) 
         static_cast<float>(std::clamp<int64_t>(get_int_option(g_cvarMaxSearchSteps, 16), 4, 32));
     uniforms.local_contrast_factor = scaled(g_cvarLocalContrast, 200, 100, 400, 0.01f);
     uniforms.blend_strength = scaled(g_cvarBlendStrength, 100, 0, 150, 0.01f);
-    uniforms.corner_rounding = 0.0f;
+    uniforms.detail_protection = scaled(g_cvarDetailProtection, 50, 0, 100, 0.01f);
     uniforms.flags = useNormalEdges ? 1u : 0u;
     const uint32_t debugMode =
         static_cast<uint32_t>(std::clamp<int64_t>(get_int_option(g_cvarDebugView, 0), 0, 2));
@@ -561,7 +562,7 @@ ModResult build_controls_tab(
     (void)right;
 
     svc_ui->pane_add_section(mod_ctx, left, "Effect");
-    add_toggle(left, "Enabled", g_cvarEnabled, "Enables the enhanced anti-aliasing pass.");
+    add_toggle(left, "Enabled", g_cvarEnabled, "Toggle for the mod entirely.");
     add_number(left, "Blend Strength", g_cvarBlendStrength,
         "Overall strength of the edge blending. 100% is the natural amount; lower keeps edges "
         "crisper, higher smooths harder (and softens slightly).",
@@ -580,6 +581,10 @@ ModResult build_controls_tab(
         "doubled edges inside high-contrast texture). Higher suppresses less. 200% is the SMAA "
         "default.",
         100, 400, 10, "%");
+    add_number(left, "Detail Protection", g_cvarDetailProtection,
+        "Raises the luma threshold in high-frequency texture detail to reduce blur while keeping "
+        "geometric edges responsive. 0% disables it; higher values protect more fine texture.",
+        0, 100, 5, "%");
     add_toggle(left, "Geometric Edges", g_cvarUseNormalEdges,
         "Also detect edges from the game's own surface normals and the depth buffer. Catches "
         "silhouettes and creases where two flat-shaded surfaces have similar brightness. No effect "
@@ -624,7 +629,7 @@ void on_open_controls(ModContext*, void*) {
         return;
     }
     UiTabDesc tabs[1] = {UI_TAB_DESC_INIT};
-    tabs[0].title = "Controls";
+    tabs[0].title = "Configurations";
     tabs[0].build = build_controls_tab;
     UiWindowDesc desc = UI_WINDOW_DESC_INIT;
     desc.tabs = tabs;
@@ -645,7 +650,7 @@ ModResult build_panel(ModContext*, UiElementHandle panel, void*, ModError*) {
 
     control = UI_CONTROL_DESC_INIT;
     control.kind = UI_CONTROL_BUTTON;
-    control.label = "Open Controls";
+    control.label = "Configure...";
     control.on_pressed = on_open_controls;
     add_control(panel, control);
     return MOD_OK;
@@ -706,6 +711,7 @@ MOD_EXPORT ModResult mod_initialize(ModError* error) {
         {"maxSearchSteps", 16, &g_cvarMaxSearchSteps},
         {"blendStrength", 100, &g_cvarBlendStrength},
         {"localContrast", 200, &g_cvarLocalContrast},
+        {"detailProtection", 50, &g_cvarDetailProtection},
         {"debugMode", 0, &g_cvarDebugView},
     };
     for (const auto& opt : intOptions) {
@@ -808,6 +814,7 @@ MOD_EXPORT ModResult mod_shutdown(ModError*) {
 
     g_cvarEnabled = g_cvarEdgeThreshold = g_cvarUseNormalEdges = g_cvarNormalThreshold = 0;
     g_cvarDepthThreshold = g_cvarMaxSearchSteps = g_cvarBlendStrength = g_cvarLocalContrast = 0;
+    g_cvarDetailProtection = 0;
     g_cvarDebugView = 0;
     g_computeType = g_drawType = 0;
     g_afterOpaqueHook = 0;
