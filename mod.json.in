@@ -1,6 +1,6 @@
 {
-  "id": "com.ajsea1sy.advancedantialiasing",
-  "name": "Advanced Anti-Aliasing",
+  "id": "com.ajsea1sy.enhancedantialiasing",
+  "name": "Enhanced Anti-Aliasing",
   "version": "@PROJECT_VERSION@",
   "author": "Rix (@ajsea1sy)",
   "description": "Configurable SMAA post-process anti-aliasing with luma, depth, and authored-normal edge detection. Delivered per GameBanana bounty."
