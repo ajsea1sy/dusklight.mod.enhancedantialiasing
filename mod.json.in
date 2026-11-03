@@ -1,7 +1,7 @@
 {
-  "id": "com.example.my_mod",
-  "name": "My Mod",
+  "id": "com.ajsea1sy.advancedantialiasing",
+  "name": "Advanced Anti-Aliasing",
   "version": "@PROJECT_VERSION@",
-  "author": "You",
-  "description": "An example Dusklight mod"
+  "author": "Rix (@ajsea1sy)",
+  "description": "Configurable SMAA post-process anti-aliasing with luma, depth, and authored-normal edge detection. Delivered per GameBanana bounty."
 }
