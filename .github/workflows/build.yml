@@ -122,7 +122,7 @@ jobs:
       - name: Upload combined bundle
         uses: actions/upload-artifact@v7
         with:
-          name: mod-combined
+          name: adv_anti_aliasing
           path: combined/*.dusk
           if-no-files-found: error
 
