@@ -1,8 +1,8 @@
-# Enhanced Anti-Aliasing for Dusklight
 <img src="res/Icon.png" width="200">
+
+# Enhanced Anti-Aliasing for Dusklight
 Adds configurable SMAA anti-aliasing with luma, depth, authored normal edge detection, and more. Adapted from an open-source template by Automata.
 # Attribs
-
 This mod is based on the SMAA implementation from Automata-RTX’s Dusklight mods:
 
 https://github.com/automata-rtx/dusklight-mods
@@ -16,7 +16,6 @@ SMAA was developed by Jorge Jimenez, Jose I. Echevarria, Tiago Sousa, Diego Guti
 https://github.com/iryoku/smaa
 
 # Licensing
-
 `SMAA` is distributed under the MIT License.
 
 `dusklight-mods` and `Enhanced Anti-Aliasing` are distributed under the GPL-3.0 License.
