@@ -1,4 +1,5 @@
 # Enhanced Anti-Aliasing for Dusklight
+<img src="res/Icon.png" width="200">
 Adds configurable SMAA anti-aliasing with luma, depth, authored normal edge detection, and more. Adapted from an open-source template by Automata.
 # Attribs
 
