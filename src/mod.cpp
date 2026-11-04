@@ -1,4 +1,4 @@
-// E#include "mods/service.hpp"
+#include "mods/service.hpp"
 #include "mods/svc/config.h"
 #include "mods/svc/gfx.h"
 
